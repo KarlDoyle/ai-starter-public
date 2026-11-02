@@ -1,10 +1,12 @@
 # AI Starter
 
 Three copyable starting points for AI applications: a Next.js web app, a Python
-CLI/service, and a local keyword retrieval tool. Each includes CI, tests, security
-guidance and configuration copied from a shared engineering standard.
+CLI/service, and a local keyword retrieval tool. Each includes engineering
+guardrails: CI, tests, security guidance and a copied shared standard. Copying a
+template and running its checks requires no API key, vector database or hosted
+service; model-backed application features require provider configuration.
 
-![CI](https://github.com/KarlDoyle/ai-starter/actions/workflows/ci.yml/badge.svg?branch=main)
+![CI](https://github.com/KarlDoyle/ai-starter-public/actions/workflows/ci.yml/badge.svg?branch=main)
 ![templates](https://img.shields.io/badge/templates-3-slategray?style=flat-square)
 ![license](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 
@@ -37,6 +39,8 @@ Templates are copied into a new project. The shared standard is maintained in
 this repository and copied into generated projects; there is no runtime shared
 package or project generator.
 
+See the [engineering decisions and trade-offs](docs/stack-decisions.md#engineering-decisions).
+
 ```mermaid
 flowchart LR
   subgraph T[Starting points]
@@ -67,6 +71,10 @@ honest documentation. A human makes the final merge decision.
 Each demo copies one template and runs its full CI checks without calling a
 model. Run each block from this repository's root, using an unused destination.
 The template READMEs describe how to run the applications and configure providers.
+
+![Terminal transcript of a temporary Python service copy passing Ruff lint, format checking and pytest, including the secret scan.](docs/ai-starter-demo.svg)
+
+Real local verification of a copied template: engineering checks, not model response quality.
 
 ### Python service demo
 

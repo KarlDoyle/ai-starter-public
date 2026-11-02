@@ -3,6 +3,27 @@
 These templates are intentionally small. They are starter layers, not a shared
 framework.
 
+## Engineering decisions
+
+### Copy, don’t generate.
+
+Templates are copied into new projects, avoiding a generator, shared runtime
+dependency and version-sync burden. **Trade-off:** each project owns its copy;
+upstream fixes must be reviewed and applied manually.
+
+### Deterministic checks first.
+
+Typecheck, lint, tests, secret scanning and builds run without a model where
+applicable to the template; AI review is optional and advisory. **Trade-off:**
+these checks provide repeatable engineering feedback, but do not establish model
+response quality or production readiness.
+
+### Local AI review is advisory.
+
+The reviewer uses a [human-owned rubric](review-rubric.md), but a human owns the
+final merge decision. **Trade-off:** local review needs a local model service and
+its output can vary; a verdict cannot replace deterministic checks or judgement.
+
 ## `ai-next-app`
 
 - TypeScript
