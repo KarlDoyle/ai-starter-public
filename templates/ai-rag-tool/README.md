@@ -29,7 +29,7 @@ then update the tests and documentation. Its current scope remains keyword match
 ## Setup
 
 ```bash
-uv sync
+uv sync --dev
 ```
 
 ## Run
@@ -40,7 +40,11 @@ uv run rag-tool "What sources are available?"
 
 ## Validate
 
+Run the full CI checks. The pre-push hook runs Ruff lint and pytest only.
+
 ```bash
+uv run ruff check .
+uv run ruff format --check .
 uv run pytest
 ```
 

@@ -12,10 +12,11 @@ a known set of operational files from `_standard/`.
 > don't reinvent the gates per project.
 
 ## What the standard guarantees
-Every project that adopts it gets the same four gates, run in the same order,
-both locally (pre-push) and in CI:
+Template CI runs the checks below in order. Local pre-push hooks run a subset:
+typecheck and tests for Node; Ruff lint and pytest for Python. Ruff checks Python
+lint and formatting; it is not a Python type checker.
 
-1. **Typecheck** (TS: `tsc --noEmit`; Python: `ruff` stands in as the static gate)
+1. **Typecheck** (TS: `tsc --noEmit`; Python: no type checker included)
 2. **Lint + format** (TS: biome; Python: ruff)
 3. **Test** (TS: vitest; Python: pytest) — always includes a **secret scan**
 4. **Build** (TS: framework build; Python: n/a — covered by lint+test)
@@ -28,7 +29,7 @@ Cheapest, fastest signal first; each step only runs if the previous passed.
 | Standard file | Lands at | Role |
 | --- | --- | --- |
 | `_standard/ci.yml` | `.github/workflows/ci.yml` | Sequential CI gates (typecheck → lint → test → build) |
-| `_standard/pre-push` | `.githooks/pre-push` | Local mirror of CI; **robust no-op** if no deps/pm installed |
+| `_standard/pre-push` | `.githooks/pre-push` | Local subset of CI; **robust no-op** if no deps/pm installed |
 | `_standard/biome.json` | `biome.json` | Lint + format (2-space, double quotes, 100-col, `noExplicitAny`) |
 | `_standard/vitest.config.ts` | `vitest.config.ts` | Node test env; coverage thresholds documented, off by default |
 | `_standard/setup-env.ts` | `tests/setup-env.ts` | Strips the git variables a pre-push hook exports (see below) |
@@ -41,7 +42,7 @@ Plus a `package.json` `prepare` script: `git config core.hooksPath .githooks || 
 | Standard file | Lands at | Role |
 | --- | --- | --- |
 | `_standard/python/ci.yml` | `.github/workflows/ci.yml` | Sequential CI gates (ruff → ruff format → pytest) via uv |
-| `_standard/python/pre-push` | `.githooks/pre-push` | Local mirror; **robust no-op** if uv not installed |
+| `_standard/python/pre-push` | `.githooks/pre-push` | Local subset of CI; **robust no-op** if uv not installed |
 | `_standard/python/ruff.toml` | `ruff.toml` | Lint + format (biome's counterpart) |
 | `_standard/python/test_secret_scan.py` | `tests/test_secret_scan.py` | pytest port of the secret scan |
 | `_standard/python/install-hooks.sh` | `scripts/install-hooks.sh` | uv-equivalent of `prepare` (sets `core.hooksPath`) |
@@ -120,7 +121,7 @@ itself must strip the same variables at the call site.
 
 ## The standing reviewer (opt-in)
 On top of the always-on deterministic gates, the standard ships an **opt-in,
-local, free, independent acceptance-gate**: `scripts/review.mjs` sends a diff +
+local, advisory reviewer**: `scripts/review.mjs` sends a diff +
 optional spec + the human-owned rubric (`docs/review-rubric.md`) to a **local
 Ollama** model and prints `VERDICT: ACCEPT|REJECT` with a 0–5 score per rubric
 dimension. Run it with `pnpm review`. It is **advisory** (a human merges) and
