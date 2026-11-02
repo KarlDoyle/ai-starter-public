@@ -1,7 +1,8 @@
 # AI Starter
 
-Three practical templates for building AI applications, with consistent
-engineering checks built into each starting point.
+Three copyable starting points for AI applications: a Next.js web app, a Python
+CLI/service, and a local keyword retrieval tool. Each includes CI, tests, security
+guidance and configuration copied from a shared engineering standard.
 
 ![CI](https://github.com/KarlDoyle/ai-starter/actions/workflows/ci.yml/badge.svg?branch=main)
 ![templates](https://img.shields.io/badge/templates-3-slategray?style=flat-square)
@@ -9,16 +10,26 @@ engineering checks built into each starting point.
 
 ## Templates
 
-- **[Next.js AI app](templates/ai-next-app/)** — Next.js, React, TypeScript,
-  Vercel AI SDK, Tailwind, and Vitest.
-- **[Python AI service](templates/ai-python-service/)** — a small CLI/service
-  starter using Pydantic AI, `uv`, Ruff, and pytest.
-- **[Keyword retrieval tool](templates/ai-rag-tool/)** — local document loading,
-  keyword matching, and source citations; it does not include embeddings or a
-  vector database.
+### Choose a template
 
-Each template includes prompts, smoke evaluations, tests, example environment
-configuration, and security guidance.
+| Template | Choose it for |
+| --- | --- |
+| [Next.js AI app](templates/ai-next-app/) | An AI web interface using Next.js, React, TypeScript and the Vercel AI SDK. |
+| [Python AI service](templates/ai-python-service/) | A Python CLI or service starting point using Pydantic AI and uv. |
+| [Keyword retrieval tool](templates/ai-rag-tool/) | Searching local documents by keyword and returning excerpts with source references. No embeddings or vector database. |
+
+### What's included
+
+| Included | Next.js app | Python service | Keyword retrieval |
+| --- | --- | --- | --- |
+| Starting implementation | Chat page and API route | Model-calling CLI | Document loading, keyword ranking and source references |
+| Prompt files and JSONL smoke fixtures | Yes | Yes | Yes |
+| Tests | Vitest | pytest | pytest |
+| Static checks | TypeScript and Biome | Ruff lint and format | Ruff lint and format |
+| Copied CI, pre-push hook, secret scan, `.env.example` and security guidance | Yes | Yes | Yes |
+
+Smoke fixtures are starter cases, not scored model evaluations. See
+[evaluation coverage and limits](docs/evals-baseline.md).
 
 ## How it fits together
 
@@ -43,34 +54,88 @@ flowchart LR
   PG --> H
 ```
 
-The checks are deterministic and run locally and in the generated project's CI.
-The optional local AI reviewer provides suggestions; it is not a merge gate.
+Templates include deterministic checks for local use and CI. Pre-push hooks run
+a subset of CI checks; see Quality gates below.
+
+The optional [local AI reviewer](docs/standing-reviewer.md) is **advisory, not a
+merge gate**. It uses the existing [human-owned rubric](docs/review-rubric.md):
+claims match reality, meaningful tests, security, no secrets, spec adherence and
+honest documentation. A human makes the final merge decision.
 
 ## Try a template
 
-For example, copy the Python service and run its checks:
+Each demo copies one template and runs its full CI checks without calling a
+model. Run each block from this repository's root, using an unused destination.
+The template READMEs describe how to run the applications and configure providers.
+
+### Python service demo
+
+Requires Python 3.12+ and uv:
 
 ```bash
 cp -R templates/ai-python-service ../my-ai-service
 cd ../my-ai-service
-uv sync --dev
-uv run ruff check .
+uv sync --dev &&
+uv run ruff check . &&
+uv run ruff format --check . &&
 uv run pytest
 ```
 
-For the Next.js template, use Node 24 and pnpm 11:
+### Next.js app demo
+
+Requires Node 24 and pnpm 11:
 
 ```bash
-cd templates/ai-next-app
-pnpm install --frozen-lockfile
+cp -R templates/ai-next-app ../my-ai-app
+cd ../my-ai-app
+pnpm install --frozen-lockfile &&
 pnpm typecheck && pnpm lint && pnpm test && pnpm build
 ```
 
-## Verification
+### Keyword retrieval demo
 
-The repository's CI runs the unit suite and its secret scan on pushes and pull
-requests. Each template also defines the checks that its generated project
-inherits. Run the relevant commands after changing a template.
+Requires Python 3.12+ and uv. Its smoke tests create temporary Markdown sources
+and exercise keyword retrieval and source references:
+
+```bash
+cp -R templates/ai-rag-tool ../my-retrieval-tool
+cd ../my-retrieval-tool
+uv sync --dev &&
+uv run ruff check . &&
+uv run ruff format --check . &&
+uv run pytest
+```
+
+## Quality gates
+
+At the repository root, run `node --test "tests/**/*.test.mjs"` for the reviewer
+unit tests and repository secret scan. Root CI runs this suite on pull requests
+and pushes to `main`; it does **not** run the three template suites.
+
+Each copied template includes its own CI workflow and pre-push hook. After
+installing dependencies as shown above, run its checks from the copied project:
+
+| Template | Full CI checks |
+| --- | --- |
+| Next.js app | `pnpm typecheck && pnpm lint && pnpm test && pnpm build` |
+| Python service | `uv run ruff check . && uv run ruff format --check . && uv run pytest` |
+| Keyword retrieval | `uv run ruff check . && uv run ruff format --check . && uv run pytest` |
+
+Each template's test command includes its pattern-based secret scan. Next.js
+pre-push runs typecheck and tests; Python pre-push runs Ruff lint and pytest.
+Hooks require activation and can skip when tooling is unavailable. See the
+[setup and inheritance checklist](docs/project-generation.md).
+
+These checks require no live model or API key and do not establish model response
+quality. The [local verification script](docs/verify-all.md) runs a subset of
+these checks; it does not replace the full commands above.
+
+## When not to use this
+
+- You need authentication, payments, a database or deployment configuration already integrated.
+- You need semantic retrieval, embeddings or a vector database out of the box.
+- You need measured model quality or production-readiness guarantees.
+- You need centrally managed updates: copied projects own their files, and changes here do not propagate automatically.
 
 ## License
 

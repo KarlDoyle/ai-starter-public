@@ -33,7 +33,7 @@ pnpm dev
 
 ## Validate
 
-The four gates, in the order CI and the pre-push hook run them:
+Run the full CI checks in this order. The pre-push hook runs typecheck and tests.
 
 ```bash
 pnpm typecheck

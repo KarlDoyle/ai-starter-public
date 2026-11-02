@@ -1,6 +1,6 @@
 # The Standing Reviewer
 
-An **opt-in, local, free, independent acceptance-gate**. After a change is built,
+An **opt-in local AI reviewer** providing advisory feedback. After a change is built,
 it judges the diff against a human-owned rubric (and an optional spec) and prints
 a terse `VERDICT: ACCEPT | REJECT` with a 0–5 score per rubric dimension and
 reasons that cite the specific gap. It is **advisory** — a human still makes the
@@ -27,7 +27,7 @@ silent "looks fine".
 | `docs/review-rubric.md` | The **human-owned bar** (versioned). The reviewer scores against this. |
 | `scripts/review.mjs` | The runner (zero deps: native `fetch` + `node:` builtins). |
 | `reviews/log.jsonl` | Append-only score log, one JSON line per run (git-ignored). |
-| `.claude/agents/reviewer.md` | The reviewer **persona** — the same independent-gate stance, for when you'd rather run the review as a Claude Code subagent. |
+| `.claude/agents/reviewer.md` | The reviewer **persona** — the same advisory stance, for when you'd rather run the review as a Claude Code subagent. |
 | `tests/review.test.mjs` | Deterministic tests for the runner (fake fetch, fixed timestamps — no Ollama needed). |
 
 ## The human-owned-rubric guardrail
