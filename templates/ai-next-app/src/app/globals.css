@@ -1,0 +1,162 @@
+/*
+ * Tailwind 4 is CSS-first: there is no tailwind.config.js. The theme is declared
+ * here with `@theme`, which emits each token as a real custom property on :root
+ * *and* generates the matching utilities (bg-bg, text-muted, border-line, ...).
+ * Component classes below stay hand-written — use whichever fits the job.
+ */
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #f7f7f5;
+  --color-panel: #ffffff;
+  --color-text: #111827;
+  --color-muted: #4b5563;
+  --color-line: #d1d5db;
+  --color-accent: #1d4ed8;
+}
+
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+}
+
+button,
+textarea {
+  font: inherit;
+}
+
+.shell {
+  min-height: 100vh;
+  padding: 32px;
+}
+
+.panel {
+  max-width: 920px;
+  margin: 0 auto;
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  background: var(--color-panel);
+  padding: 24px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+h1 {
+  margin: 8px 0 0;
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+.lede {
+  margin: 12px 0 0;
+  color: var(--color-muted);
+  max-width: 68ch;
+}
+
+.chat {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.message {
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: #fafafa;
+}
+
+.message p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.message.assistant {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.role {
+  display: inline-block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  margin-bottom: 8px;
+}
+
+.composer {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 108px;
+  resize: vertical;
+  border-radius: 8px;
+  border: 1px solid var(--color-line);
+  padding: 12px;
+}
+
+button {
+  justify-self: start;
+  border: 1px solid var(--color-accent);
+  background: var(--color-accent);
+  color: white;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+button:disabled {
+  opacity: 0.7;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 640px) {
+  .shell {
+    padding: 16px;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+}

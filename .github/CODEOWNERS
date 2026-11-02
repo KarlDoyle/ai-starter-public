@@ -1,0 +1,6 @@
+# CODEOWNERS — copy to .github/CODEOWNERS in the target repo.
+#
+# Code-owner review is enforced when branch protection requires it.
+
+.github/**   @KarlDoyle
+Sources/**   @KarlDoyle

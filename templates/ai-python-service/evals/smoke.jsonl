@@ -1,0 +1,3 @@
+{"id":"hello","prompt":"Say hello in one sentence.","checks":["one sentence","friendly"]}
+{"id":"python","prompt":"Describe this starter in one sentence.","checks":["Python","uv","Pydantic AI"]}
+

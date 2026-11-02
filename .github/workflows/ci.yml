@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # Added for L5c (merge policy): GITHUB_TOKEN-authored pushes/PRs (e.g. the
+  # seed-tier0-test workflow, acting as github-actions[bot]) do not trigger
+  # push/pull_request-triggered workflows — that's a deliberate GitHub
+  # loop-prevention rule, not a bug here. workflow_dispatch lets
+  # seed-tier0-test.yml explicitly kick this workflow against its seed
+  # branch so the resulting check run attaches to the seed PR's head SHA,
+  # letting automerge.yml see real green checks instead of none.
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+# Dogfood: ai-starter runs its own build standard. The standard's secret-scan
+# is applied to this whole repo (templates included) on every push/PR — the
+# same gate the templates ship, enforced on the repo that ships them.
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+
+      # Secret-scan over the whole repo (no deps — Node's built-in test runner).
+      - name: Secret scan
+        run: node --test "tests/**/*.test.mjs"

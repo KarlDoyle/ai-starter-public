@@ -1,0 +1,18 @@
+# --- Python ---
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+dist/
+build/
+*.egg-info/
+
+# --- Env / secrets (never commit real values) ---
+.env
+.env.*
+!.env.example
+
+# --- OS ---
+.DS_Store

@@ -1,0 +1,3 @@
+{"id":"sources","query":"What sources are present?","checks":["source","citation"]}
+{"id":"scope","query":"What is the repository scope?","checks":["local","data"]}
+

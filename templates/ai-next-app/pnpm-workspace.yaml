@@ -1,0 +1,17 @@
+# Nothing is overridden any more. The three overrides that used to live here
+# (nanoid, postcss, jsondiffpatch) were floors forced by the old Next 15 /
+# Vitest 4 tree; the Next 16 / Vitest 5 tree resolves above all of them on its
+# own, and jsondiffpatch is no longer a dependency at all. Add an override here
+# only when a transitive advisory genuinely has no fix upstream.
+onlyBuiltDependencies:
+  - "@biomejs/biome"
+  - esbuild
+  - sharp
+  - unrs-resolver
+
+# Patched transitive versions required by current security advisories.
+overrides:
+  undici: 7.30.1
+  zod: 4.6.6
+  vite: 8.3.3
+  source-map-js: 1.2.2

@@ -1,0 +1,12 @@
+# Ruff config — the ai-starter Python standard (lint + format).
+# Counterpart to biome.json on the TS side: one tool for both lint and format.
+line-length = 100
+target-version = "py312"
+
+[lint]
+# E/W: pycodestyle, F: pyflakes, I: import sorting, UP: pyupgrade,
+# B: bugbear. Lean and high-signal; widen per-project if you want more.
+select = ["E", "W", "F", "I", "UP", "B"]
+
+[format]
+quote-style = "double"

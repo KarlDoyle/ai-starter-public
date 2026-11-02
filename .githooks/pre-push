@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Pre-push gate for ai-starter itself — dogfooding the standard.
+#
+# The repo whose job is enforcing quality must pass its own bar. On `git push`
+# this runs the root secret-scan (the _standard scanner applied to this whole
+# repo, templates included) and blocks the push if a credential leaked.
+#
+# Zero-dependency: uses Node's built-in test runner, so a bare clone works
+# without an install step. Enabled via `git config core.hooksPath .githooks`,
+# wired by the package.json `prepare` script.
+#
+# Skip in an emergency with `git push --no-verify`.
+
+set -euo pipefail
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "pre-push: node not found — skipping local gate (CI still enforces)." >&2
+  exit 0
+fi
+
+echo "pre-push: secret-scan (whole repo)…"
+if ! node --test "tests/**/*.test.mjs"; then
+  echo "pre-push: secret-scan failed — push aborted." >&2
+  exit 1
+fi
+
+echo "pre-push: OK."

@@ -1,0 +1,14 @@
+{
+  "name": "ai-starter",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "description": "Three AI project templates with a shared engineering standard.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.mjs\"",
+    "check": "node --test \"tests/**/*.test.mjs\"",
+    "review": "node scripts/review.mjs",
+    "prepare": "git config core.hooksPath .githooks || true"
+  }
+}
